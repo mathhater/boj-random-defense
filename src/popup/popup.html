@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  </head>
+  <body>
+    <div id="header">
+      <a id="title" href="https://boj-random-defense.vercel.app" target="_blank">BOJ Random Defense</a>
+      <p id="go-main">Go main</p>
+      <p id="logout">Logout</p>
+      <p id="refresh">Refresh</p>
+    </div>
+
+    <div id="login-block">
+      <a id="solvedac-link" href="https://solved.ac" target="_blank">solved.ac</a>
+      <p>Login Please.</p>
+    </div>
+
+    <div id="user-block">
+      <div id="solvedac-info">
+        <a target="_blank" href="https://solved.ac/profile/aig0016">
+          <img id="tier-img" class="tier-img" />
+        </a>
+        <a id="user-handle" target="_blank"></a>
+      </div>
+      <div id="defense-info">
+        <h2 id="user-rating"></h2>
+      </div>
+      <button id="join-button">Join!</button>
+      <button id="join-retry-button">Retry!</button>
+    </div>
+    
+    <div id="void-user-block"></div>
+
+    <div id="certification-block">
+      <div id="certification-time-block">
+        <p id="certification-time-limit"></p>
+        <p id="certification-time-out">time out</p>
+      </div>
+      <div id="certification-code-block">
+        <p id="certification-code">00000000-0000-0000-000000000000</p>
+        <button id="copy-button">copy!</button>
+        <button id="copied-button">copied!</button>
+      </div>
+      <button id="certification-confirm-button">Confirm!</button>
+      <p id="certification-status"></p>
+      <p id="certification-description">
+        Please save your solved.ac profile introduction with the given Code for identity verification and press the confirm button.
+      </p>
+    </div>
+
+    <div id="contents-block">
+      <button id="range-defense-button">Range Defense!</button>
+      <button id="rank-defense-button">Rank Defense!</button>
+    </div>
+
+    <div id="range-defense-block">
+      <div id="range-defense-input-block">
+        <div id="range-defense-low-input" class="dropdown">
+          <h2 id="range-defense-low-value"></h2>
+          <img id="range-defense-low-dropdown-arrow" class="dropdown-arrow" src="./../images/dropdownArrow.svg" alt="dropdownarrow">
+          <ol id="range-defense-low-dropdown-content" class="dropdown-content">
+            <li id="range-defense-low-dropdown-item1" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item2" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item3" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item4" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item5" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item6" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item7" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item8" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item9" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item10" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item11" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item12" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item13" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item14" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item15" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item16" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item17" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item18" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item19" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item20" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item21" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item22" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item23" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item24" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item25" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item26" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item27" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item28" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item29" class="dropdown-item"></li>
+            <li id="range-defense-low-dropdown-item30" class="dropdown-item"></li>
+          </ol>
+        </div>
+        <p class="defense-separator">~</p>
+        <div id="range-defense-high-input" class="dropdown">
+          <h2 id="range-defense-high-value"></h2>
+          <img id="range-defense-high-dropdown-arrow" class="dropdown-arrow" src="./../images/dropdownArrow.svg" alt="dropdownarrow">
+          <ol id="range-defense-high-dropdown-content" class="dropdown-content">
+            <li id="range-defense-high-dropdown-item1" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item2" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item3" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item4" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item5" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item6" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item7" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item8" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item9" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item10" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item11" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item12" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item13" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item14" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item15" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item16" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item17" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item18" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item19" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item20" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item21" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item22" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item23" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item24" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item25" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item26" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item27" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item28" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item29" class="dropdown-item"></li>
+            <li id="range-defense-high-dropdown-item30" class="dropdown-item"></li>
+          </ol>
+        </div>
+      </div>
+      <button id="range-defense-start-button">Solve Start!</button>
+      <p id="range-defense-warning"></p>
+    </div>
+
+    <div id="rank-defense-block">
+      <div id="rank-defense-level-block">
+        <h2 id="rank-defense-low-level"></h2>
+        <p class="defense-separator">~</p>
+        <h2 id="rank-defense-high-level"></h2>
+      </div>
+      <button id="rank-defense-start-button">Solve Start!</button>
+    </div>
+
+    <div id="problem-solve-block">
+      <div id="problem-solve-header">
+        <h3 id="problem-solve-defense-type"></h2>
+        <div id="problem-time-block">
+          <p id="problem-time-limit"></p>
+          <p id="problem-time-out">time out</p>
+        </div>
+      </div>
+      <div id="problem-block">
+        <img id="problem-tier-img" class="tier-img" />
+        <a id="problem-id" target="_blank" href="https://www.acmicpc.net/problem/2557" style="color: rgb(157, 73, 0);">2557</a>
+        <a id="problem-title" target="_blank" href="https://www.acmicpc.net/problem/2557">Hello World</a>
+      </div>
+      <div id="problem-solve-button-block">
+        <div id="problem-solve-button-container">
+          <button id="problem-solve-button">Solve!</button>
+          <p id="problem-solve-button-warning"></p>
+        </div>
+        <div id="problem-pass-button-container">
+          <p id="problem-pass-button-notify"></p>
+          <button id="problem-pass-button">pass...</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="result-block">
+      <p id="result-rating"></p>
+    </div>
+
+    <div id="none-block">
+      <p id="none-description">
+        Users who have not yet been authenticated or whose authentication period has expired. Please authenticate again.
+      </p>
+    </div>
+
+    <div id="void-block">
+      <img id="loading-img" class="loading" src="./../images/loading.gif" alt="loading">
+    </div>
+
+    <div id="solvedac-server-status-block">
+      <p>solved.ac server status: <span id="solvedac-server-status"></span></p>
+    </div>
+  </body>
+
+  <script type="module" src="popup.js"></script>
+</html>

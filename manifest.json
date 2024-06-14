@@ -1,0 +1,22 @@
+{
+	"manifest_version": 3,
+	"name": "BOJ Random Defense",
+	"version": "0.2.6",
+	"description": "Adds tension to loose random defense",
+    "permissions": ["alarms", "cookies", "notifications", "storage"],
+    "icons": {
+        "128": "src/images/logo.png"
+    },
+    "host_permissions": [
+        "https://solved.ac/api/v3/*",
+        "https://lt6jfngbhg.execute-api.ap-northeast-2.amazonaws.com/*"
+    ],
+    "background": {
+        "service_worker": "src/background/background.js",
+        "type": "module"
+    },
+    "action": {
+        "default_title": "BOJ Random Defense",
+        "default_popup": "src/popup/popup.html"
+    }
+}
