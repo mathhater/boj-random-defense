@@ -33,11 +33,14 @@ chrome.runtime.onInstalled.addListener((details) => {
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === TEN_MINUTE_ALARM) {
     chrome.notifications.clear(alarm.name)
-    chrome.notifications.create({
-      type: 'basic',
-      title: "10 minutes left",
-      message: "If you solved the problem, Please press the button Solve!",
-      iconUrl: '../images/32.png',
-    })
+    chrome.notifications.create(
+      {
+        iconUrl: '../images/32.png',
+        title: "10 minutes left",
+        type: 'basic',
+        message: "If you solved the problem, Please press the button Solve!",
+        requireInteraction: true,
+      }
+    )
   }
 })
