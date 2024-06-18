@@ -65,12 +65,10 @@ const setUserMode = async (mode) => {
       setHeaderButtons('refresh')
       try {
         const { appStatus } = await chrome.storage.sync.get(['appStatus'])
-        if (appStatus === APP_STATUS.CERTIFICATION) {
-          await setAppMode(appStatus)
-        }
-        else{
-          await setAppMode(APP_STATUS.NONE)
-        }
+        await setAppMode(appStatus === APP_STATUS.CERTIFICATION ?
+          APP_STATUS.CERTIFICATION :
+          APP_STATUS.NONE
+        )
         chrome.storage.local.set({ userStatus: USER_STATUS.UNREGISTERED })
         const { handle, tier } = await chrome.storage.local.get(['handle', 'tier'])
         setSolvedacInfo(tier, handle)
@@ -86,12 +84,10 @@ const setUserMode = async (mode) => {
     case USER_STATUS.REGISTERED: {
       try {
         const { appStatus } = await chrome.storage.sync.get(['appStatus'])
-        if (appStatus === APP_STATUS.NONE || appStatus === APP_STATUS.CERTIFICATION) {
-          await setAppMode(APP_STATUS.SELECT_DEFENSE)
-        }
-        else{
-          await setAppMode(appStatus)
-        }
+        await setAppMode(appStatus === APP_STATUS.NONE || appStatus === APP_STATUS.CERTIFICATION ?
+          APP_STATUS.SELECT_DEFENSE :
+          appStatus
+        )
         chrome.storage.local.set({ userStatus: USER_STATUS.REGISTERED })
         const { handle, tier: localTier } = await chrome.storage.local.get(['handle', 'tier'])
         const tier = localTier ?? (await fetchSolvedacUserInfo(handle)).tier
@@ -522,7 +518,7 @@ const setResultBlock = async (previousRating, currentRating) => {
     }, frameRate)
   }, 500)
 
-  chrome.storage.local.set({ rating: currentRating })
+  await chrome.storage.local.set({ rating: currentRating })
 }
 
 const setNone = () => {
@@ -745,6 +741,7 @@ const rangeDefenseStartButtonEvent = async () => {
     rangeDefenseWarningElement.style.display = 'none'
     const { level, problemId, titleKo } = problem;
     await chrome.alarms.create(TEN_MINUTE_ALARM, { when: Date.now() + 1000 * 60 * 55 });
+
     await setAppMode(APP_STATUS.PROBLEM_SOLVE, { level, problemId, title: titleKo, createdAt, defense })
   } catch (error) {
     console.error(error)
@@ -767,6 +764,7 @@ const rankDefenseStartButtonEvent = async () => {
     const { problem, createdAt, defense } = await fetchRankDefense(cookie.value)
     const { level, problemId, titleKo } = problem
     await chrome.alarms.create(TEN_MINUTE_ALARM, { when: Date.now() + 1000 * 60 * 55 });
+
     await setAppMode(APP_STATUS.PROBLEM_SOLVE, { level, problemId, title: titleKo, createdAt, defense })
   } catch (error) {
     console.error(error)
