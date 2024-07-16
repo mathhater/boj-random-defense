@@ -784,6 +784,15 @@ const refreshButtonEvent = async () => {
     const { user } = await fetchVerifyCredentials(cookie.value)
     const { handle, tier } = user
     await chrome.storage.local.set({ handle, tier })
+
+    await chrome.cookies.remove({
+      url: `https://${BOJ_RANDOM_DEFENSE_COOKIE_URL}/`,
+      name: 'accessToken',
+    })
+    await chrome.cookies.remove({
+      url: `https://${BOJ_RANDOM_DEFENSE_COOKIE_URL}/`,
+      name: 'refreshToken',
+    })
     setUserMode(USER_STATUS.UNREGISTERED)
   } catch (error) {
     console.error(error)
