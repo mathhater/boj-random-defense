@@ -4,8 +4,6 @@ import {
   DEFENSE_TYPE,
   STATIC_SOLVEDAC_URL,
   ACMICPC_URL,
-  SOLVEDAC_COOKIE_URL,
-  BOJ_RANDOM_DEFENSE_COOKIE_URL,
   TEN_MINUTE_ALARM,
 } from '../util/constants.js'
 import { getLevelColor } from '../util/level/color.js'
@@ -34,6 +32,14 @@ import {
   fetchUserWithToken,
   fetchVerifyCredentials
 } from '../util/fetch.js'
+import {
+  getAccessToken,
+  getRefreshToken,
+  getSolvedacToken,
+  removeAccessToken,
+  removeRefreshToken,
+  isCookieValid
+} from '../util/cookie.js'
 import { messages } from '../util/messages.js'
 
 let certificationIntervalStack = []
@@ -410,9 +416,8 @@ const setRankDefenseBlock = async () => {
 
   rankDefenseBlockElement.style.display = 'flex'
   try {
-    const cookies = await chrome.cookies.getAll({ domain: `.${BOJ_RANDOM_DEFENSE_COOKIE_URL}`, name: 'accessToken' })
-    const cookie = cookies[0]
-    if (!cookie) {
+    const cookie = await getAccessToken()
+    if (!isCookieValid(cookie)) {
       setUserMode(USER_STATUS.UNREGISTERED)
       return
     }
@@ -569,8 +574,7 @@ onload = async () => {
   switch (userStatus) {
     case USER_STATUS.UNAUTHORIZED: {
       try {
-        const cookies = await chrome.cookies.getAll({ domain: `.${SOLVEDAC_COOKIE_URL}` })
-        const cookie = cookies[0]
+        const cookie = await getSolvedacToken()
         if (!cookie) {
           throw new Error(error)
         }
@@ -587,8 +591,8 @@ onload = async () => {
     }
     case USER_STATUS.UNREGISTERED: {
       try {
-        const cookies = await chrome.cookies.getAll({ domain: `.${SOLVEDAC_COOKIE_URL}` })
-        if (cookies.length === 0) {
+        const cookie = await getSolvedacToken()
+        if (!cookie) {
           throw new Error(error)
         }
         setUserMode(USER_STATUS.UNREGISTERED)
@@ -599,12 +603,8 @@ onload = async () => {
     }
     case USER_STATUS.REGISTERED: {
       try {
-        const cookies = await chrome.cookies.getAll({ domain: `.${BOJ_RANDOM_DEFENSE_COOKIE_URL}`, name: 'accessToken' })
-        const cookie = cookies[0]
-        if (!cookie) {
-          throw new Error(error)
-        }
-        if (cookie.expirationDate < new Date().getTime() / 1000) {
+        const cookie = await getAccessToken()
+        if (!isCookieValid(cookie)) {
           throw new Error(error)
         }
 
@@ -629,9 +629,8 @@ const joinButtonEvent = async () => {
     joinButtonElement.disabled = true
     joinRetryButtonElement.disabled = true
 
-    const cookies = await chrome.cookies.getAll({ domain: `.${BOJ_RANDOM_DEFENSE_COOKIE_URL}`, name: 'refreshToken' })
-    const cookie = cookies[0]
-    if (cookie) {
+    const cookie = await getRefreshToken()
+    if (isCookieValid(cookie)) {
       const data = await fetchAccessToken(cookie.value)
       if (data) {
         await setAppMode(APP_STATUS.SELECT_DEFENSE)
@@ -659,9 +658,8 @@ const joinButtonEvent = async () => {
 
 const logoutButtonEvent = async () => {
   try {
-    const cookies = await chrome.cookies.getAll({ domain: `.${BOJ_RANDOM_DEFENSE_COOKIE_URL}`, name: 'refreshToken' })
-    const cookie = cookies[0]
-    if (!cookie) {
+    const cookie = await getRefreshToken()
+    if (!isCookieValid(cookie)) {
       setUserMode(USER_STATUS.UNREGISTERED)
       throw new Error(error)
     }
@@ -671,14 +669,8 @@ const logoutButtonEvent = async () => {
       throw new Error(error)
     }
 
-    await chrome.cookies.remove({
-      url: `https://${BOJ_RANDOM_DEFENSE_COOKIE_URL}/`,
-      name: 'accessToken',
-    })
-    await chrome.cookies.remove({
-      url: `https://${BOJ_RANDOM_DEFENSE_COOKIE_URL}/`,
-      name: 'refreshToken',
-    })
+    await removeAccessToken()
+    await removeRefreshToken()
     setUserMode(USER_STATUS.UNREGISTERED)
   } catch (error) {
     console.error(error)
@@ -723,9 +715,8 @@ const rangeDefenseStartButtonEvent = async () => {
 
   try {
     rangeDefenseStartButtonElement.disabled = true
-    const cookies = await chrome.cookies.getAll({ domain: `.${BOJ_RANDOM_DEFENSE_COOKIE_URL}`, name: 'accessToken' })
-    const cookie = cookies[0]
-    if (!cookie) {
+    const cookie = await getAccessToken()
+    if (!isCookieValid(cookie)) {
       setUserMode(USER_STATUS.UNREGISTERED)
       throw new Error(error)
     }
@@ -754,9 +745,8 @@ const rankDefenseStartButtonEvent = async () => {
   const rankDefenseStartButtonElement = document.getElementById('rank-defense-start-button')
   try {
     rankDefenseStartButtonElement.disabled = true
-    const cookies = await chrome.cookies.getAll({ domain: `.${BOJ_RANDOM_DEFENSE_COOKIE_URL}`, name: 'accessToken' })
-    const cookie = cookies[0]
-    if (!cookie) {
+    const cookie = await getAccessToken()
+    if (!isCookieValid(cookie)) {
       setUserMode(USER_STATUS.UNREGISTERED)
       throw new Error(error)
     }
@@ -775,8 +765,7 @@ const rankDefenseStartButtonEvent = async () => {
 
 const refreshButtonEvent = async () => {
   try {
-    const cookies = await chrome.cookies.getAll({ domain: `.${SOLVEDAC_COOKIE_URL}` })
-    const cookie = cookies[0]
+    const cookie = await getSolvedacToken()
     if (!cookie) {
       throw new Error('No cookie')
     }
@@ -784,15 +773,8 @@ const refreshButtonEvent = async () => {
     const { user } = await fetchVerifyCredentials(cookie.value)
     const { handle, tier } = user
     await chrome.storage.local.set({ handle, tier })
-
-    await chrome.cookies.remove({
-      url: `https://${BOJ_RANDOM_DEFENSE_COOKIE_URL}/`,
-      name: 'accessToken',
-    })
-    await chrome.cookies.remove({
-      url: `https://${BOJ_RANDOM_DEFENSE_COOKIE_URL}/`,
-      name: 'refreshToken',
-    })
+    await removeAccessToken()
+    await removeRefreshToken()
     setUserMode(USER_STATUS.UNREGISTERED)
   } catch (error) {
     console.error(error)
@@ -807,9 +789,8 @@ const problemSolveButtonEvent = async () => {
     problemSolveButtonElement.disabled = true
     const { handle } = await chrome.storage.local.get(['handle'])
     const { problemId } = await fetchCurrentProblem(handle)
-    const cookies = await chrome.cookies.getAll({ domain: `.${BOJ_RANDOM_DEFENSE_COOKIE_URL}`, name: 'accessToken' })
-    const cookie = cookies[0]
-    if (!cookie) {
+    const cookie = await getAccessToken()
+    if (!isCookieValid(cookie)) {
       setUserMode(USER_STATUS.UNREGISTERED)
       throw new Error(error)
     }
@@ -843,9 +824,8 @@ const problemPassButtonEvent = async () => {
     problemPassButtonElement.disabled = true
     const { handle } = await chrome.storage.local.get(['handle'])
     const { problemId } = await fetchCurrentProblem(handle)
-    const cookies = await chrome.cookies.getAll({ domain: `.${BOJ_RANDOM_DEFENSE_COOKIE_URL}`, name: 'accessToken' })
-    const cookie = cookies[0]
-    if (!cookie) {
+    const cookie = await getAccessToken()
+    if (!isCookieValid(cookie)) {
       setUserMode(USER_STATUS.UNREGISTERED)
       throw new Error(error)
     }
