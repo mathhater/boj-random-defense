@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "BOJ Random Defense",
-	"version": "0.2.7",
+	"version": "0.2.8",
 	"description": "Adds tension to loose random defense",
     "permissions": ["alarms", "cookies", "notifications", "storage"],
     "icons": {
