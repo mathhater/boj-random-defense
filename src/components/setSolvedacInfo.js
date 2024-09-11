@@ -10,5 +10,5 @@ export const setSolvedacInfo = (tier, handle) => {
   chrome.storage.local.set({ handle, tier })
   tierImgElement.src = `${STATIC_SOLVEDAC_URL}/tier_small/${tier}.svg`
   userHandleElement.innerText = handle
-  userHandleElement.href = `${BOJ_RANDOM_DEFENSE_CLIENT_URL}/${handle}`
+  userHandleElement.href = `${BOJ_RANDOM_DEFENSE_CLIENT_URL}/user/${handle}`
 }
